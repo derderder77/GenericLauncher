@@ -137,6 +137,16 @@ public class MainActivity extends NativeActivity {
 
 	}
 
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (event.getCharacters() != null) {
+			nativeTypeCharacter(event.getCharacters());
+		}
+		if (nativeKeyHandler(event.getKeyCode(), event.getAction())) {
+			return true;
+		}
+		return super.dispatchKeyEvent(event);
+	}
+
 	public String getExternalStoragePath() {
 		return Environment.getExternalStorageDirectory().getAbsolutePath();
 	}
@@ -255,6 +265,8 @@ public class MainActivity extends NativeActivity {
 
 	public native void nativeBackSpacePressed();
 
+	public native boolean nativeKeyHandler(int keycode, int action);
+
 	public native void nativeReturnKeyPressed();
 
 	public void buyGame() {
@@ -277,7 +289,7 @@ public class MainActivity extends NativeActivity {
 	}
 
 	public byte[] getFileDataBytes(String name) {
-		System.out.println("Get file data: " + name);
+		//System.out.println("Get file data: " + name);
 		try {
 			if (name.isEmpty())
 				return null;
