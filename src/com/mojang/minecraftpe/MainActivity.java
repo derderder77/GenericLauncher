@@ -13,12 +13,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-import android.media.AudioManager;
-import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Vibrator;
 import android.app.NativeActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -26,10 +20,17 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
@@ -360,11 +361,8 @@ public class MainActivity extends NativeActivity {
 		}
 	}
 
-	public int[] getImageData(String name, boolean wtf) {
-		if (!wtf) {
-			Log.w("GenericLauncher","I must return null?");
-		}
-		System.out.println("Get image data: " + name);
+	public int[] getImageData(String name) {
+		//System.out.println("Get image data: " + name);
 		try {
 			InputStream is = getInputStreamForAsset(name);
 			if (is == null) {
@@ -727,6 +725,32 @@ public class MainActivity extends NativeActivity {
   	public String[] getBroadcastAddresses() {
    		return new String[]{};
   	}
+
+	public String[] getIPAddresses() {
+		Log.i("GenericLauncher", "getIPAdresses");
+		return new String[]{};
+	}
+
+	void setFileDialogCallback(long callback) {
+		Log.i("GenericLauncher", "setFileDialogCallback");
+	}
+
+	public Intent createAndroidLaunchIntent() {
+		Context context = getApplicationContext();
+		return context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+	}
+
+	public void updateLocalization(final String language, final String country) {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				Locale locale = new Locale(language,country);
+				Locale.setDefault(locale);
+				Configuration conf = new Configuration();
+				conf.locale = locale;
+				MainActivity.this.getResources().updateConfiguration(conf,MainActivity.this.getResources().getDisplayMetrics());
+			}
+		});
+	}
   
   	public long getTotalMemory() {
     		ActivityManager localActivityManager = (ActivityManager)getSystemService("activity");

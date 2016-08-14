@@ -10,7 +10,12 @@ public class Store
   {
     this.listener = paramStoreListener;
   }
-  
+
+  public void acknowledgePurchase(String str1, String str2)
+  {
+    Log.i("GenericLauncher","Store: Acknowledge " + " " + str1 + " " + str2);
+  }
+
   public void destructor()
   {
     Log.i("GenericLauncher","Store: Destructor");
@@ -22,9 +27,9 @@ public class Store
     return "Placeholder store ID";
   }
   
-  public void purchase(String paramString)
+  public void purchase(String str1, boolean bool, String str2)
   {
-    Log.i("GenericLauncher","Store: Purchase " + paramString);
+    Log.i("GenericLauncher","Store: Purchase " + str1 + " " + bool + " "+str2);
   }
   
   public void queryProducts(String[] paramArrayOfString)
